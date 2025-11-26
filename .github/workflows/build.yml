@@ -1,6 +1,8 @@
-name: Build Kivy APK
+name: Build Android APK
 
 on:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -8,33 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y build-essential libssl-dev libffi-dev python3-dev python3-pip git
-        pip install --upgrade pip setuptools wheel buildozer cython
+      - name: Build with Buildozer Action
+        uses: digreatbrian/buildozer-action@v2
+        with:
+          python-version: '3.10'
+          buildozer-cmd: buildozer android debug
 
-    - name: Install Android SDK / NDK
-      run: |
-        sudo apt install unzip openjdk-17-jdk -y
-        buildozer android clean
-        echo "Installing Android NDK r23b"
-        wget https://dl.google.com/android/repository/android-ndk-r23b-linux.zip
-        unzip android-ndk-r23b-linux.zip
-        mkdir -p ~/.buildozer/android/platform/
-        mv android-ndk-r23b ~/.buildozer/android/platform/
-
-    - name: Build APK
-      run: |
-        buildozer -v android debug
-
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: MyApp
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyApp-apk
+          path: ./bin/*.apk        name: MyApp
         path: bin/*.apk    - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
