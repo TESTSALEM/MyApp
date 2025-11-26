@@ -1,69 +1,51 @@
 [app]
-# اسم التطبيق الذي يظهر للمستخدم
 title = MyApp
-
-# اسم الحزمة (يجب أن يكون بدون مسافات)
 package.name = myapp
-
-# اسم الحزمة على أندرويد (لا تغيره إن لم تعرف ماذا تفعل)
 package.domain = org.test
-
-# ملف البداية الرئيسي في مشروعك
-source.main = main.py
-
-# مجلد المشروع
 source.dir = .
-
-# الصيغ التي سيتم تضمينها داخل الـ APK
-source.include_exts = py,png,jpg,kv
-
-# لا توجد أيقونة وصورة بداية → نوقفهم
-# icon.filename = %(source.dir)s/data/icon.png
-# presplash.filename = %(source.dir)s/data/presplash.png
-
-# النسخة
+source.include_exts = py,kv,png,jpg,jpeg,ttf
 version = 1.0
 
-# الواجهة تعتمد على Kivy
-requirements = python3, kivy
+# Main file
+main.py = main.py
 
-# لغة واجهة المستخدم
-fullscreen = 0
+# Icon
+# icon.filename = icon.png
 
-# اتجاه التطبيق (عمودي)
+# Supported orientations: portrait, landscape, all
 orientation = portrait
 
-# تفعيل log لعرض الأخطاء
+# Fullscreen?
+fullscreen = 1
+
+# Permissions example
+# android.permissions = INTERNET
+
+# Kivy Requirements
+requirements = python3,kivy
+
+# Supported architectures
+android.archs = arm64-v8a, armeabi-v7a
+
+# Minimum / Target Android API
+android.minapi = 21
+android.api = 31
+
+# **CRITICAL FIX**
+# Use Android NDK r23b because Kivy does NOT work with 25/26/27+
+android.ndk = 23b
+
+# Use default SDK (works with NDK 23b)
+android.sdk = 24.1.6392215
+
+# Don't set ndk_path manually, let Buildozer manage it
+android.ndk_path =
+
+# Package format: debug or release
+buildozer.package_format = apk
+
 log_level = 2
 
 
 [buildozer]
-log_level = 2
-
-
-[android]
-# المعمارية المدعومة
-android.archs = arm64-v8a, armeabi-v7a
-
-# نسخة Android API المستخدمة
-android.api = 31
-
-# أقل نسخة أندرويد يدعمها التطبيق
-android.minapi = 21
-
-# NDK نسخة مناسبة لـ Android API 31
-android.ndk = 25b
-
-# SDK المناسب
-android.sdk = 31
-
-# نوع الحزمة النهائية
-android.packaging_mode = aab
-
-# تشغيل الإنترنت داخل التطبيق إن احتجت لاحقًا
-android.permissions = INTERNET
-
-
-[python]
-# لا تغيرها
-android.accept_sdk_license = True
+warn_on_root = 1
